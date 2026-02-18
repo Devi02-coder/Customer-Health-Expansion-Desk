@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: ched_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: startups_db
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  # Node.js Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ched_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=34.121.250.206
+      - DB_USER=codegen_user
+      - DB_PASSWORD="JHIUGuygfy&^$^*56357"
+      - DB_NAME=STARTUPS
+      - DB_PORT=3306
+      - AI_AGENT_KEY=ched_agent_secret_key_2026
+    depends_on:
+      - db
+    restart: always
+
+  # FastAPI AI Service
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: ched_ai_service
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=your-deepmind-secret-key
+    restart: always
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ched_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+    restart: always
