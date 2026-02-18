@@ -61,7 +61,7 @@ const MetricCard = ({ title, value, icon, trend, color }) => (
     <div className={`p-8 rounded-[2rem] border backdrop-blur-3xl transition-all hover:-translate-y-1 hover:shadow-2xl cursor-default group ${color}`}>
         <div className="flex justify-between items-start mb-6">
             <div className="p-3 bg-slate-900/80 rounded-2xl group-hover:scale-110 transition-transform shadow-lg">{icon}</div>
-            <span className={`text-[10px] font-black px-3 py-1 rounded-full tracking-widest ${trend.startsWith('+') ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+            <span className={`text-[10px] font-black px-3 py-1 rounded-full tracking-widest ${String(trend).startsWith('+') ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
                 {trend}
             </span>
         </div>
